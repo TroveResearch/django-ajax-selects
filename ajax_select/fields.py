@@ -1,4 +1,3 @@
-
 from ajax_select import get_lookup
 from django import forms
 from django.conf import settings
@@ -78,7 +77,7 @@ class AutoCompleteSelectWidget(forms.widgets.TextInput):
 
         got = data.get(name, None)
         if got:
-            return long(got)
+            return try_convert_to_long(got)
         else:
             return None
 
@@ -128,6 +127,11 @@ class AutoCompleteSelectField(forms.fields.CharField):
 
 ####################################################################################
 
+def try_convert_to_long(val):
+    try:
+        return long(val)
+    except ValueError:
+        return val 
 
 class AutoCompleteSelectMultipleWidget(forms.widgets.SelectMultiple):
 
@@ -195,7 +199,7 @@ class AutoCompleteSelectMultipleWidget(forms.widgets.SelectMultiple):
 
     def value_from_datadict(self, data, files, name):
         # eg. u'members': [u'|229|4688|190|']
-        return [long(val) for val in data.get(name,'').split('|') if val]
+        return [try_convert_to_long(val) for val in data.get(name,'').split('|') if val]
 
     def id_for_label(self, id_):
         return '%s_text' % id_
