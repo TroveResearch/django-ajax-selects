@@ -15,6 +15,12 @@ import os
 
 as_default_help = u'Enter text to search.'
 
+def try_convert_to_long(val):
+    try:
+        return long(val)
+    except ValueError:
+        return val 
+        
 ####################################################################################
 
 class AutoCompleteSelectWidget(forms.widgets.TextInput):
@@ -127,11 +133,6 @@ class AutoCompleteSelectField(forms.fields.CharField):
 
 ####################################################################################
 
-def try_convert_to_long(val):
-    try:
-        return long(val)
-    except ValueError:
-        return val 
 
 class AutoCompleteSelectMultipleWidget(forms.widgets.SelectMultiple):
 
